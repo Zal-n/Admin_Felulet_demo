@@ -6,6 +6,15 @@ import Login from './Login';
 import Upload from './Upload';
 
 function NavbarComponent({ user, setUser }) {
+
+  async function handleLogout(){
+    const res = await fetch('http://localhost:3000/logout', {
+      method: 'POST',
+      credentials: 'include',
+    });
+    setUser();
+    
+  }
   return (
     <BrowserRouter>
       <Navbar expand="lg" className="bg-body-tertiary">
@@ -35,7 +44,7 @@ function NavbarComponent({ user, setUser }) {
             {user ?
               (
                 <div className="ms-auto">
-                  <Button className="bg-danger">Kijelentkezés</Button>
+                  <Button className="bg-danger" onClick={handleLogout}>Kijelentkezés</Button>
                 </div>
               ) : null
             }
@@ -49,7 +58,7 @@ function NavbarComponent({ user, setUser }) {
         <Route path='/' element={<Home />} />
         <Route path='/products' element={user ? <Products /> : <Navigate to='/login' />} />
         <Route path='/upload' element={(user && user.rights == 1) ? <Upload /> : <Navigate to='/login' />} />
-        <Route path='/login' element={!user ? <Login /> : <Navigate to='/Home' />} />
+        <Route path='/login' element={!user ? <Login setUser={setUser}/> : <Navigate to='/' />} />
       </Routes>
     </BrowserRouter>
   )

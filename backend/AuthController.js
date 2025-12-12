@@ -20,15 +20,17 @@ export function Login(req, res, next) {
     if (!users[username]) return res.status(400).json({ message: 'Invalid username or password!' });
     if (!argon2.verify(users[username].password, password)) return res.status(400).json({ message: 'Invalid username or password!' });
 
+
+    const user = {
+      username: username,
+      rights: users[username].rights,
+    }
+    console.log(user)
     // Tokenek létrehozása
     const token = {
-      username: username
+      username: user.username
     }
     const tokenCookie = generateToken(token); // Token létrehozása
-
-    const rights = {
-      rights: users[username].rights
-    }
 
 
     // Token cookie elküldése 
@@ -38,14 +40,10 @@ export function Login(req, res, next) {
       httpOnly: true  // Csak a szerver tudja elolvasni
     });
 
-    // Jogosultságok elküldése
-    res.cookie('rights', rights, {
-      httpOnly: false // A kliens is el tudja olvasni
-    });
-    return res.status(200).json({ message: 'Login successful', data: { username: username } });
+    return res.status(200).json({ message: 'Login successful', data: user });
 
   } catch (error) {
-    console.error(error);
+    next(error)
   }
 }
 
