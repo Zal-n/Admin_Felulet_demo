@@ -1,6 +1,8 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
+import { Login, Logout } from './AuthController.js';
+import { authenticateToken } from './jwt.js';
 
 const app = express();
 
@@ -16,7 +18,7 @@ app.use(cors({
 }));
 
 app.post('/login', Login);
-app.post('/logout', Logout);
+app.post('/logout', authenticateToken, Logout);
 
 
 
