@@ -47,6 +47,20 @@ export function Login(req, res, next) {
   }
 }
 
+export function checkAuth(req, res, next) {
+  const username = res.user.username;
+  if (!users[username]) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+  
+  const user = {
+    username: username,
+    rights: users[username].rights,
+  };
+  
+  return res.status(200).json({ data: user });
+}
+
 /**
  * Kijelentkező függvény
  * Kitörli az összes cookiet és elküld egy sikereres választ

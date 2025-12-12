@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
-import { Login, Logout } from './AuthController.js';
+import { Login, Logout, checkAuth } from './AuthController.js';
 import { authenticateToken } from './jwt.js';
 import {colorLog, errorLog} from 'psgutil';
 
@@ -22,7 +22,7 @@ app.use(colorLog)
 
 app.post('/login', Login);
 app.post('/logout', Logout);
-
+app.get('/me', authenticateToken, checkAuth);
 
 
 app.use(errorLog)
