@@ -3,7 +3,7 @@ const TOKEN_SECRET = 'Token-Secret-Key';
 
 
 /** * Middleware a token hitelesítéséhez
- * Ellenörzi hogy a kliens küldett-e tokent majd validálja azt
+ * * Ellenörzi hogy a kliens küldett-e tokent majd validálja azt
  * Ha sikeres, hozzáadja a dekódolt tokent a response objektumhoz 
  * és meghívja a következő middleware-t
  * A következő függvény res.user-ként érheti el a dekódolt tokent
@@ -11,8 +11,8 @@ const TOKEN_SECRET = 'Token-Secret-Key';
  * 
  */
 export function authenticateToken(req, res, next) {
+    const token = req.cookies.token;
     if(!token) return res.status(401).json({message: 'No token!'});
-    const token = req.cookies('token');
 
     const decoded = jwt.verify(token, TOKEN_SECRET);
     if(!decoded) return res.status(403).json({message: 'Invalid token!'});

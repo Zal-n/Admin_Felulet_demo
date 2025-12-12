@@ -1,11 +1,11 @@
 import { generateToken } from './jwt.js';
-import users from './users.js';
+import { users } from './users.js';
 import argon2 from 'argon2';
 
 /**
- * Bejelentkező függvény
- * Bemenet: Vár egy 'username' és egy 'password' mezőt a request body-ban
- * Megvizsgálja a fiók létezését és hogy helyes-e a jelszó
+ * * Bejelentkező függvény
+ * * Bemenet: Vár egy 'username' és egy 'password' mezőt a request body-ban
+ * * Megvizsgálja a fiók létezését és hogy helyes-e a jelszó
  * Létrehoz 2 tokent majd elküldi a felhasználónak 
  */
 
@@ -42,7 +42,7 @@ export function Login(req, res, next) {
     res.cookie('rights', rights, {
       httpOnly: false // A kliens is el tudja olvasni
     });
-    return res.status(200).status({ message: 'Login successful', data: { username: username } });
+    return res.status(200).json({ message: 'Login successful', data: { username: username } });
 
   } catch (error) {
     console.error(error);
@@ -54,6 +54,7 @@ export function Login(req, res, next) {
  * Kitörli az összes cookiet és elküld egy sikereres választ
  */
 export function Logout(req, res, next) {
-  res.clearCookies();
-  return res.status(200).status({ message: 'Logout successful' });
+  res.clearCookie('token');
+  res.clearCookie('rights');
+  return res.status(200).json({ message: 'Logout successful' });
 }
