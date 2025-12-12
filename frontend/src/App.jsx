@@ -1,10 +1,16 @@
-import './App.css'
+import './App.css';
+import NavbarComponent from './Nav';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { useState } from 'react';
+
 
 function App() {
+  const [user, setUser] = useState({});
 
   return (
     <>
-      <h1>App</h1>
+<NavbarComponent/>
+
     </>
   )
 }
